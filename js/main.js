@@ -1,47 +1,87 @@
+var proj3857 = ol.proj.get('EPSG:3857');
+var proj3857Extent = proj3857.getExtent();
+
 var resolutions = new Array(19);
 var matrixIds = new Array(19);
+var size = ol.extent.getWidth(proj3857Extent)/256;
 for (var z = 0; z < 19; z = z+1){
-	resolutions[z] = (360/256) / Math.pow(2,z);
+	resolutions[z] = size / Math.pow(2,z);
 	matrixIds[z] = z;
 }
 var tdtgrid = new ol.tilegrid.WMTS({
-			extent: [-180,-90,180,90],
+			origin:ol.extent.getTopLeft(proj3857Extent),
 			resolutions: resolutions,
 			matrixIds: matrixIds
 		})
 
-proj4.defs("EPSG:4490","+proj=longlat +ellps=GRS80 +no_defs"); 
-var proj4490 = ol.proj.get('EPSG:4490');
-proj4490.setExtent([-180,-90,180,90]);
-proj4490Extent = proj4490.getExtent();
 
-var layertdt0 = new ol.layer.Tile({
+var layertdtvec = new ol.layer.Tile({
 	source: new ol.source.WMTS({
-		url:'http://t0.tianditu.com/vec_c/wmts',
+		url:'http://t0.tianditu.com/vec_w/wmts',
 		layer: 'vec',
-		matrixSet: 'c',
+		matrixSet: 'w',
 		format: '',
-		projection: proj4490,
+		projection: proj3857,
 		tileGrid: tdtgrid,
 		style: 'default'
 	}),
-	opacity:0.7
+	opacity:1
+});
+
+var layertdtimg = new ol.layer.Tile({
+	source: new ol.source.WMTS({
+		url:'http://t0.tianditu.com/img_w/wmts',
+		layer: 'img',
+		matrixSet: 'w',
+		format: '',
+		projection: proj3857,
+		tileGrid: tdtgrid,
+		style: 'default'
+	}),
+	opacity:1
+});
+
+var layertdtcva = new ol.layer.Tile({
+	source: new ol.source.WMTS({
+		url:'http://t0.tianditu.com/cva_w/wmts',
+		layer: 'cva',
+		matrixSet: 'w',
+		format: '',
+		projection: proj3857,
+		tileGrid: tdtgrid,
+		style: 'default'
+	}),
+	opacity:1
+});
+
+var layertdtcia = new ol.layer.Tile({
+	source: new ol.source.WMTS({
+		url:'http://t0.tianditu.com/cia_w/wmts',
+		layer: 'cia',
+		matrixSet: 'w',
+		format: '',
+		projection: proj3857,
+		tileGrid: tdtgrid,
+		style: 'default'
+	}),
+	opacity:1
 });
 
 var layerosm = new ol.layer.Tile({
 source: new ol.source.OSM()
 });
-
+var view = new ol.View({
+		projection: proj3857,
+		extent: proj3857Extent,
+		center: [12949668,4864993],
+		zoom:13
+	})
 var map = new ol.Map({
 	layers:[
 		// layerosm,
-		layertdt0
+		// layertdtvec,
+		// layertdtcva
 	],
 	target: 'map',
-	view: new ol.View({
-		projection: proj4490,
-		// extent: proj4490Extent,
-		center: [116.33,40],
-		zoom:13
-	})
+	view: view
 });
