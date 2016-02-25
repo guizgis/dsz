@@ -2,11 +2,7 @@ var toolcontainer;
 $(document).ready(function(){
      createMeasurement();
      
-})
-
-
-
-
+});
 //显示工具的提示名称
 $("#toolbar .tool").mouseover(function(){
 	tooltip.innertext = this.title;
@@ -19,8 +15,13 @@ $("#home").on("click",zoomHome);
 function zoomHome () {
      view.setCenter([12949668,4864993]);
      view.setZoom("13");
-}
+};
 
+//打印地图
+$("#print").on("click",printMap);
+function printMap(){
+     
+} 
 
 //测量
 $("#measure").on("click",toggleMeasure);
@@ -32,7 +33,7 @@ function toggleMeasure () {
      }
      else{
           toolcontainer.css("display","none");
-          map.removeLayer(measurevector);
+          stopMeasure();
      }
 }
 
@@ -58,6 +59,5 @@ function basemapToggle(evt){
           map.addLayer(layertdtvec);
           map.addLayer(layertdtcva);
           map.addLayer(measurevector);
-     }
-     
+     }     
 }

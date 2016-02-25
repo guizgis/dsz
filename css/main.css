@@ -73,6 +73,10 @@
     background-image: url(/dsz/images/measure.png);
 }
 
+#print{
+    background-image: url(/dsz/images/print.png);
+}
+
 #map .ol-zoom{
     top:100px;
     left:30px;
@@ -138,7 +142,7 @@
     width:auto;
     height: auto;
     /*background-color: black;*/
-    display: block;
+    display: none;
 }
 
 #measurement {
